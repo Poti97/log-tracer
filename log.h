@@ -1,6 +1,8 @@
 #ifndef LOG_H
 #define LOG_H
+#define MAX_DIM 100
 
+#include<signal.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -8,6 +10,10 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+time_t tbegin, tend;
 
 void log_read(int argc, char* argv[]){
   for(int i = 1; i < argc; i++){
@@ -36,10 +42,21 @@ char* log_convert_time(time_t old_time){
   return new_time;
 }
 
-void log_write(char* tempo) {
+void begin_time(int sig){
+  tbegin = time(NULL);
+}
+
+void end_time(int sig){
+  tend = time(NULL);
+}
+
+void log_write(char* tempo, double ms,int id) {
   FILE* fp;
+  char* time_spent_str = {"Time spent processing: "};
   fp = fopen("log.txt", "w");
   fputs(tempo, fp);
+  fputs(time_spent_str, fp);
+//  fputs((char)id, fp);
   fclose(fp);
   return;
 }
