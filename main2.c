@@ -21,8 +21,6 @@ void StartTime (int sig) {
 
 void EndTime () {
 //inizializzo il tempo di fine e stampo nel file le cose
-	char* ctend;
-	char cttot[20];
 	double ttot = difftime(tend,tstart);
 //	snprintf(cttot, 20, "%f", ttot);
 	tend = time(NULL);
@@ -30,6 +28,7 @@ void EndTime () {
 	strftime(buf,20,"%Y-%m-%d %H:%M:%S",localtime(&tstart));
 	strftime(buf2,20,"%Y-%m-%d %H:%M:%S",localtime(&tend));
 	printf("buff: %s \n",buf);
+	sprintf(buftot,"%f", ttot);
 	int fd[2];
 	char* start_str = "Start time = ";
 	char* end_str = "End time = ";
@@ -42,7 +41,7 @@ void EndTime () {
 	write(fd[0], buf2, strlen(buf2));
 	write(fd[0], "\n", 1);
 	write(fd[0], time_spent_str, strlen(time_spent_str));
-//	write(fd[0], ttot, strlen(ttot));  **QUESTO NON VA**
+	write(fd[0], buftot, strlen(buftot)); // **QUESTO NON VA**
   close(fd[0]);
 	exit(0);
 }
@@ -57,6 +56,6 @@ int main () {
 		sleep(3);
 	} while(0);
 	kill(pid,SIGUSR2);
-	
+
 	exit(EXIT_SUCCESS);
 }
