@@ -1,3 +1,4 @@
+
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -14,6 +15,7 @@
 time_t tstart,tend;
 
 void StartTime (int sig) {
+  
   //inizializzo il tempo iniziale
   tstart = time(NULL);
 
@@ -75,6 +77,7 @@ int main () {
 
 	exit(EXIT_SUCCESS);
 	//dormo aspettando il main
+
 	while (1)
 		sleep(1);
 	return 0;
